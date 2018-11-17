@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    title IEMAAC - #{title}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    block headerStyles
+    block headerScripts
+  body
+    <nav class="navbar navbar-expand-lg navbar-warning bg-dark">
+      <a class="navbar-brand" href="/admin/login"><strong>IEMAAC</strong></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+          //-<a class="nav-item nav-link" href="/admin/login">Admin <span class="sr-only">(current)</span></a>
+          //-<a class="nav-item nav-link" href="/docente/login">Docente</a>
+          </div>
+      </div>
+    </nav>
+      
+    .container-fluid
+      .row.mt-4
+        .col-3
+          .list-group
+            <a href="#historialLogros" data-toggle="collapse" aria-expanded="true" class="list-group-item list-group-item-action bg-dark text-white">Historial de Logros de Aprendizaje Por</a>
+            <ul class="list-unstyled collapse show" id="historialLogros" style="">
+              a#resumenGrado.list-group-item.list-group-item-action(href='/docente/resumenGrado') Grado y Área
+              a#resumenArea.list-group-item.list-group-item-action(href='/docente/resumenCurso') Área
+              a#resumenPersonalizado.list-group-item.list-group-item-action(href='/docente/resumenPersonalizado') Grado, Sección Y Área
+              a#historialEstudiante.list-group-item.list-group-item-action(href='/docente/historialEstudiante') Historial Estudiante por Área
+            </ul>
+            <a href="#planMejoraMenu" data-toggle="collapse" aria-expanded="true" class="list-group-item list-group-item-action bg-dark text-white">Plan de Mejora de Logros de Aprendizaje</a>
+            <ul class="list-unstyled collapse show" id="planMejoraMenu" style="">
+              a#planMejora.list-group-item.list-group-item-action(href='/docente/planMejora') Plan de mejora
+            </ul>
+            a#cerrarSesion.list-group-item.list-group-item-action(href='/docente/login') Cerrar sesión
+        .col-9
+          block content
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    script.
+      $('body').css('background-image', 'linear-gradient(AliceBlue , Gainsboro )');
+      $('body').css('min-height', '100vh');
+      
+    block footerScripts

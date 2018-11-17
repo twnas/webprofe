@@ -1,0 +1,102 @@
+extends layout
+block headerScripts
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="/js/liquidFillGauge.js"></script>
+block content
+  h1.text-center Plan de mejora
+  .container-fluid
+    .row
+      p.py-2 #[h4 Año escolar:]&nbsp;#[h4.text-primary #{periodo}]
+    .row
+      .col
+        .form-row
+          .form-group.col-md-4
+            label(for='selectGrado') Grado
+            select#selectGrado.form-control
+              option(selected='') Seleccione...
+              each grado, ind in grados
+                option(value=grado.id, selected=(ind == 0)) #{grado.denominacion}
+          .form-group.col-md-4
+            label(for='selectSeccion') Seccion
+            select#selectSeccion.form-control
+              option(selected='') Seleccione...
+              each seccion, ind in grados[0].secciones
+                option(value=seccion.idSeccion, selected=(ind == 0)) #{seccion.denominacion}
+          .form-group.col-md-4
+            label(for='selectArea') Área
+            select#selectArea.form-control
+              option(selected='') Seleccione...
+              each area, ind in areas
+                option(value=area.idArea selected=(ind == 0)) #{area.nombre}
+    .row
+      .col
+        .table.table-bordered(align='center')
+          table.text-center
+            thead
+              tr
+                td
+                th 
+                  | IIB&nbsp;
+                  button.btn.btn-warning(onclick=`editarMetas(2)`) ✍️
+                    i.
+                th 
+                  | IIIB&nbsp;
+                  button.btn.btn-warning(onclick=`editarMetas(3)`) ✍️
+                    i.
+                th 
+                  | IVB&nbsp;
+                  button.btn.btn-warning(onclick=`editarMetas(4)`) ✍️
+                    i.
+            tbody
+              tr#filaIntervalo1
+                th.text-success Muy alto (18-20)
+                td#1-2
+                td#1-3
+                td#1-4
+              tr#filaIntervalo2
+                th.text-info Alto (14-17)
+                td#2-2
+                td#2-3
+                td#2-4
+              tr#filaIntervalo3
+                th.text-warning Regular (11-13)
+                td#3-2
+                td#3-3
+                td#3-4
+              tr#filaIntervalo3
+                th.text-danger Bajo (0-10)
+                td#4-2
+                td#4-3
+                td#4-4
+                
+  #editarMetasModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='editarNotasModalLabel', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          h5#editarMetasModalLabel.modal-title Modificar metas
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body.p-4
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text Muy alto (18-20)
+            input#inputIntervalo1.form-control(type='text', aria-label='Muy alto (18-20)', aria-describedby='inputIntervalo1')
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text Alto (14-17)
+            input#inputIntervalo2.form-control(type='text', aria-label='Alto (14-17)', aria-describedby='inputIntervalo2')
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text Regular (11-13)
+            input#inputIntervalo3.form-control(type='text', aria-label='Regular (11-13)', aria-describedby='inputIntervalo3')
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text Bajo (0-10)
+            input#inputIntervalo4.form-control(type='text', aria-label='Bajo (0-10)', aria-describedby='inputIntervalo4')
+        .modal-footer
+          button.btn.btn-secondary(type='button', data-dismiss='modal') Cancelar
+            button#confirmarEditarMetas.btn.btn-primary(type='button', data-dismiss='modal') Guardar cambios         
+block footerScripts
+  script(type='text/javascript', src='/js/admin/metas.js')
+  script.
+    $('#metas').addClass('active');

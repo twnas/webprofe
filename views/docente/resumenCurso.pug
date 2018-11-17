@@ -1,0 +1,225 @@
+extends layout
+block headerScripts
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+block content
+	div#printableArea
+		h3 Resumen por área
+		.row
+			.col-6
+				<select id="areaSelect" class="custom-select custom-select-lg mb-3">
+					<option value="" selected>Área</option>
+				</select>
+			.col-5
+				<button id="generarReporteButton" class="btn btn-success btn-block">Generar Historial de Logros</button>
+			.col-1
+				<button onclick="printDiv()" class="btn btn-success btn-block">🖨</button>
+		.row.mx-1
+			table.table.table-bordered.table-striped
+				thead
+					<tr>
+						<th id="seccionesLista" colspan="1" >Todos los grados y secciones </th>
+						<th id="cantidadAlumnos" colspan="18" >Cantidad de estudiantes: 0</th>
+					</tr>
+					<tr>
+						<th colspan="1" rowspan="2">Intervalo</th>	
+						<th colspan="2">Resul I B</th>
+						<th colspan="2">Meta II B</th>
+						<th colspan="2">Resul II B</th>
+						<th colspan="2">Meta III B</th>
+						<th colspan="2">Resul III B</th>
+						<th colspan="2">Meta IV B</th>
+						<th colspan="2">Resul IV B</th>
+						<th colspan="2">Meta anual</th>
+						<th colspan="2">Resultado Anual</th>
+					</tr>
+					<tr>
+						<th>C</th>
+						<th>%</th>
+						<th>C</th>
+						<th>%</th>
+						<th>C</th>
+						<th>%</th>
+						<th>C</th>
+						<th>%</th>
+						<th>C</th>
+						<th>%</th>
+						<th>C</th>
+						<th>%</th>
+						<th>C</th>
+						<th>%</th>
+						<th>C</th>
+						<th>%</th>
+						<th>C</th>
+						<th>%</th>
+					<tr>
+				tbody
+					<tr id="row1">
+						<th>18-20</th>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr id="row2">
+						<th>14-17</th>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr id="row3">
+						<th>11-13</th>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr id="row4">
+						<th>0-10</th>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr id="row5">
+						<th>Exonerados</th>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr id="row6">
+						<th>No asisten</th>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr id="row7">
+						<th>Total</th>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+		.row
+			.col-6
+				<div id="pieChartB1" style="width: 100%; height: 400px;"></div>
+			.col-6
+				<div id="pieChartB2" style="width: 100%; height: 400px;"></div>
+			.col-6
+				<div id="pieChartB3" style="width: 100%; height: 400px;"></div>
+			.col-6
+				<div id="pieChartB4" style="width: 100%; height: 400px;"></div>
+block footerScripts
+	script(src="/js/docente/resumenPorArea.js")
+	script.
+		$('#resumenArea').addClass('active');
+		function printDiv() {
+			let printContents = document.getElementById("printableArea").innerHTML;
+			let originalContents = document.body.innerHTML;
+
+			document.body.innerHTML = printContents;
+
+			window.print();
+
+			document.body.innerHTML = originalContents;
+		}

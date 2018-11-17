@@ -1,0 +1,55 @@
+extends layout
+block headerStyles
+	link(rel="stylesheet", href="/css/docente/style.css")
+	link(rel="stylesheet", href="/css/docente/historialEstudiante.css")
+block headerScripts
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="/js/liquidFillGauge.js"></script>
+block content
+	h3 Historial por estudiante
+	#printableArea
+		.row.mb-4
+			.col-3
+				<select id="gradoSelect" class="custom-select">
+					<option value="" selected>Grado</option>
+				</select>
+			.col-2
+				<select id="seccionSelect" class="custom-select">
+					<option value="" selected>Sección</option>
+				</select>
+			.col-3
+				<select id="areaSelect" class="custom-select">
+					<option value="" selected>Área</option>
+				</select>
+			.col-3
+				<button id="obtenerNotasButton" class="btn btn-success btn-block">Obtener notas</button>
+			.col-1
+				<button onclick="printDiv()" class="btn btn-success btn-block">🖨</button>
+		.row
+			.col-lg-6.col-sm-12
+				<svg width="500" height="500"></svg>
+			.col-lg-6.col-sm-12
+				table.table.table-striped.table-bordered
+					thead
+						tr
+							th #
+							th DNI
+							th Apellidos
+							th Nombres
+					tbody#alumnosTableBody
+		
+	<div id="tooltip" class="hidden">
+		<p><strong>Nota</strong></p>
+		<p><span id="value"></span></p>
+	</div>
+block footerScripts
+	script(src="/js/docente/historialEstudiante.js")
+	script.
+		$('#historialEstudiante').addClass('active');
+		function printDiv() {
+			let printContents = document.getElementById("printableArea").innerHTML;
+			let originalContents = document.body.innerHTML;
+			document.body.innerHTML = printContents;
+			window.print();
+			document.body.innerHTML = originalContents;
+		}

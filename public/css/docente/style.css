@@ -1,0 +1,10 @@
+.table td {
+  text-align: center;   
+}
+.table th {
+  padding: 0 auto; 
+  text-align: center;   
+}
+.table tr#row7 {
+  font-weight: bold;
+}

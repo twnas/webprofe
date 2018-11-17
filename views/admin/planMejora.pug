@@ -1,0 +1,106 @@
+extends layout
+block headerScripts
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="/js/liquidFillGauge.js"></script>
+block content
+  h1.text-center Plan de mejora
+  #printableArea.container-fluid
+    .row
+      p.py-2 #[h4 Año escolar:]&nbsp;#[h4.text-primary #{periodo}]
+      .col-auto.align-self-end
+        <button onclick="printDiv()" class="btn btn-secondary btn-block">🖨</button>
+    .row
+      .col
+        .form-row
+          .form-group.col-md-4
+            label(for='selectGrado') Grado
+            select#selectGrado.form-control
+              option(selected='') Seleccione...
+              each grado, ind in grados
+                option(value=grado.id, selected=(ind == 0)) #{grado.denominacion}
+          .form-group.col-md-4
+            label(for='selectSeccion') Seccion
+            select#selectSeccion.form-control
+              option(selected='') Seleccione...
+              each seccion, ind in grados[0].secciones
+                option(value=seccion.idSeccion, selected=(ind == 0)) #{seccion.denominacion}
+          .form-group.col-md-4
+            label(for='selectArea') Área
+            select#selectArea.form-control
+              option(selected='') Seleccione...
+              each area, ind in areas
+                option(value=area.idArea selected=(ind == 0)) #{area.nombre}
+    .row
+      .col
+        .table.table-responsive
+          table
+            thead.text-center
+              tr
+                th Fortalezas
+                th Aspecto Crítico
+                th Estrategias
+                th Compromiso
+                th Cronograma
+            tbody
+              tr
+                td
+                  ul#listFortalezas.list-group
+                    button.btn.btn-primary.list-group-item.list-group-item-action(onclick='openModal(0)')  Agregar fortaleza
+                td
+                  ul#aspectoCritico.list-group
+                    li.list-group-item.list-group-item-action
+                      h4 Análisis estadístico
+                      p#ae1.text-success
+                        strong (18-20)&nbsp;
+                      p#ae2.text-warning
+                        strong Mayoría&nbsp;
+                      p#ae3.text-danger
+                        strong (0-10)&nbsp;
+                    li.list-group-item.list-group-item-action
+                      h4 Metas:
+                      p#m1.text-success
+                        strong (18-20)&nbsp;
+                      p#m2.text-info
+                        strong (14-17)&nbsp;
+                      p#m3.text-warning
+                        strong (11-13)&nbsp;
+                      p#m4.text-danger
+                        strong (0-10)&nbsp;
+                td
+                  ul#listEstrategias.list-group
+                    li
+                      button.btn.btn-primary.list-group-item.list-group-item-action(onclick='openModal(2)') Agregar estrategia
+                td
+                  #listCompromisos.list-group
+                    li
+                      button.btn.btn-primary.list-group-item.list-group-item-action(onclick='openModal(3)') Agregar compromiso
+                td
+                  #Cronograma.list-group
+                    .list-group-item.list-group-item-action
+                      input(type='month', min='2018-01', max='2018-12')
+  #nuevoMensajeModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='editarNotasModalLabel', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          h5#nuevoMensajeModalLabel.modal-title 
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body.p-4
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text 
+            input#inputNuevoMensaje.form-control(type='text', aria-label='Primer bimestre', aria-describedby='input1erBimestre', placeholder='Ej: Mejorar la calidad de la clase')
+        .modal-footer
+          button.btn.btn-secondary(type='button', data-dismiss='modal') Cancelar
+            button#confirmarNuevoMensaje.btn.btn-primary(type='button', data-dismiss='modal') Guardar cambios         
+block footerScripts
+  script(type='text/javascript', src='/js/admin/planMejora.js')
+  script.
+    $('#planMejora').addClass('active');
+    function printDiv() {
+      let printContents = document.getElementById("printableArea").innerHTML;
+      let originalContents = document.body.innerHTML;
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+    }

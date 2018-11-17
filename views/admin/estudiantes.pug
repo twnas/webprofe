@@ -1,0 +1,116 @@
+extends layout
+block headerScripts
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="/js/liquidFillGauge.js"></script>
+block headerStyles
+	link(rel="stylesheet", href="/css/admin/estudiantes.css")
+block content
+	h1.text-center Estudiantes - Periodo 2018
+	.row
+		.col-3
+			<select id="gradoSelect" class="custom-select custom-select-lg mb-3">
+				<option value="" selected>Grado</option>
+			</select>
+			<select id="seccionSelect" class="custom-select custom-select-lg mb-3">
+				<option value="" selected>Sección</option>
+			</select>
+		.col-9
+			.row.mb-3
+				.col-4
+					<button class="btn btn-primary btn-block" data-toggle="modal" data-target="#agregarAlumnoModal">Agregar estudiante</button>
+				.col-4
+					<button id="modificarAlumnoButton" class="btn btn-warning btn-block" data-toggle="modal" data-target="#modificarAlumnoModal">Modificar estudiante</button>
+				.col-4
+					<button id="toggleEstadoAlumno" class="btn btn-danger btn-block">Eliminar estudiante</button>
+			<table id="alumnosTable" class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">DNI</th>
+						<th scope="col">Apellidos</th>
+						<th scope="col">Nombres</th>
+					</tr>
+				</thead>
+				<tbody id="alumnosTableBody">
+					if estudiantes
+						each estudiante, ind in estudiantes
+							tr(data-idAlumno=estudiante.idAlumno)
+								th(scope='row') #{ind + 1}
+								td #{estudiante.dni}
+								td #{estudiante.apellidos}
+								td #{estudiante.nombres}
+				</tbody>
+			</table>
+	<div class="modal fade" id="agregarAlumnoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Registro de estudiante</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form action="" method="POST" id="agregarAlumno">
+						<div class="form-group">
+							<label for="inputDNI">DNI</label>
+							<input type="text" class="form-control" name="inputDNI" id="inputDNI" placeholder="Documento de identidad" maxlength="13" required>
+						</div>
+						<div class="form-group">
+							<label for="inputApellidoPaterno">Apellido paterno</label>
+							<input type="text" class="form-control" name="inputApellidos" id="inputApellidoPaterno" placeholder="Ingrese apellido paterno" required>
+						</div>
+						<div class="form-group">
+							<label for="inputApellidoMaterno">Apellido materno</label>
+							<input type="text" class="form-control" name="inputApellidos" id="inputApellidoMaterno" placeholder="Ingrese apellido materno" required>
+						</div>
+						<div class="form-group">
+							<label for="inputNombres">Nombres</label>
+							<input type="text" class="form-control" name="inputNombres" id="inputNombres" placeholder="Ingrese Nombre" required>
+						</div>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+						<button type="submit" class="btn btn-primary">Guardar</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="modificarAlumnoModal" tabindex="-1" role="dialog" aria-labelledby="modificarAlumnoLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modificarAlumnoLabel">Modificacion de estudiante</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form action="" method="POST" id="modificarAlumno">
+						<div class="form-group">
+							<label for="inputDNIMod">DNI</label>
+							<input type="text" class="form-control" name="inputDNI" id="inputDNIMod" maxlength="13" required>
+						</div>
+						<div class="form-group">
+							<label for="inputApellidoPaternoMod">Apellido paterno</label>
+							<input type="text" class="form-control" name="inputApellidos" id="inputApellidoPaternoMod" required>
+						</div>
+						<div class="form-group">
+							<label for="inputApellidoMaternoMod">Apellido materno</label>
+							<input type="text" class="form-control" name="inputApellidos" id="inputApellidoMaternoMod" required>
+						</div>
+						<div class="form-group">
+							<label for="inputNombresMod">Nombres</label>
+							<input type="text" class="form-control" name="inputNombres" id="inputNombresMod" required>
+						</div>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+						<button type="submit" class="btn btn-primary">Guardar</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+block footerScripts
+	script(src="/js/admin/estudiantes.js")
+	script.
+		$('#estudiantes').addClass('active');
+		listenersRows();

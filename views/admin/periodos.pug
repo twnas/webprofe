@@ -1,0 +1,131 @@
+extends layout
+block headerScripts
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="/js/liquidFillGauge.js"></script>
+block content
+	h1.text-center Años Escolares
+	.row.mb-2
+		.col-6
+			<button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Agregar periodo escolar</button>
+		.col-3
+			<select id="periodoSelect" class="custom-select">
+				<option value="" selected>Seleccione año a activar o borrar</option>
+
+			</select>
+		.col-3
+			<button id="activarPeriodoButton" class="btn btn-primary">Activar Año</button>
+			<button id="borrarPeriodoButton" class="btn btn-danger">Borrar Año</button>
+	<table class="table">
+		<thead class="thead-dark">
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">Periodo académico</th>
+				<th scope="col">Estado</th>
+				<th scope="col">Fecha de Creación</th>
+			</tr>
+		</thead>
+		<tbody id="periodoEscolarTable">
+		</tbody>
+	</table>
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Agregar periodo escolar</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<input id ="inputPeriodo" type="text" placeholder="2020">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+					<button id="registrarPeriodoButton"type="button" class="btn btn-primary">Registrar año escolar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+block footerScripts
+	script.
+		$('#periodos').addClass('active');
+		$('#registrarPeriodoButton').click(function(){
+			let periodo = $('#inputPeriodo').val();
+			if(!periodo || periodo == ""){
+				alert("Tiene que llenar el periodo");
+				return ;
+			}
+			$.post('/api/periodo/registrar', {periodo: periodo})
+				.done((data)=>{
+					console.log(data);
+					let idPeriodo = data.idPeriodo;
+					$.post('/api/periodo/activar', {idPeriodo: idPeriodo})
+						.done((data)=>{
+							location.reload();
+						})
+				})
+				.fail((response)=>{
+					alert("Ocurrió un error al registrar el periodo: "+response.responseJSON.status);
+				})
+		})
+		function cargarPeriodos(){
+			fetch('/api/periodo')
+				.then((data)=>{
+					return data.json();
+				})
+				.then((periodos)=>{
+					console.log(periodos)
+					let cont = 1;
+					for(let periodo of periodos){
+						option = document.createElement( "option" );
+						$(option).append(periodo.año);
+						$(option).attr('value',periodo.idPeriodoEscolar);
+						$('#periodoSelect').append(option);
+
+						tr =  document.createElement( "tr" );
+						th = document.createElement( "th" );
+						$(th).attr("scope", "row");
+						th.append(cont++);
+						tdAño = document.createElement( "td" );
+						tdEstado = document.createElement( "td" );
+						tdFecha = document.createElement( "td" );
+						tdAño.append(periodo.año);
+						tdEstado.append(periodo.estado);
+						tdFecha.append(periodo.createdAt);
+						tr.append(th,tdAño, tdEstado, tdFecha);
+						$('#periodoSelect').append(option);
+						$('#periodoEscolarTable').append(tr);
+					}
+				})
+		}
+		cargarPeriodos();
+		$('#activarPeriodoButton').click(function(){
+			let idPeriodo = $('#periodoSelect').val();
+			console.log(idPeriodo);
+			if(idPeriodo==""){
+				alert("Tiene que seleccionar un año");
+			}else{
+				$.post('/api/periodo/activar', {idPeriodo: idPeriodo})
+					.done((response)=>{
+						location.reload();
+					})
+					.fail(()=>{
+						alert("Ocurrió un error al activar el periodo");
+					})
+			}
+		})
+		$('#borrarPeriodoButton').click(function(){
+			let idPeriodo = $('#periodoSelect').val();
+			if(idPeriodo==""){
+				alert("Tiene que seleccionar un año");
+			}else{
+				$.post('/api/periodo/eliminar', {idPeriodo: idPeriodo})
+					.done((response)=>{
+						location.reload();
+					})
+					.fail(()=>{
+						alert("Ocurrió un error al eliminar el periodo");
+					})
+			}
+		})

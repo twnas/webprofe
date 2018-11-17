@@ -1,0 +1,127 @@
+extends layout
+block headerStyles
+	link(href="/css/admin/docentes.css", rel="stylesheet")
+block headerScripts
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="/js/liquidFillGauge.js"></script>
+block content
+	h1.text-center Docentes
+	.row.mb-2
+		<button class="btn btn-primary" data-toggle="modal" data-target="#crearDocenteModal">Crear docente</button>
+	.row
+		<table id="docentesTable" class="table">
+			<thead class="thead-light">
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Apellidos</th>
+					<th scope="col">Nombres</th>
+					<th scope="col">DNI</th>
+					<th scope="col">email</th>
+					<th scope="col">Estado</th>
+					<th scope="col">Acciones</th>
+				</tr>
+			</thead>
+			<tbody id="docentesTableBody">
+			</tbody>
+		</table>
+	//- Modal para crear docente
+	<div class="modal fade" id="crearDocenteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Creación de Docente</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form action="docentes/registrarDocente" id="registroDocenteForm" method="POST">
+						<div class="form-group">
+							<label for="inputNombres">Nombres</label>
+							<input type="text" class="form-control" name="nombres" id="inputNombres" placeholder="Ingrese Nombre" maxlength="30">
+						</div>
+						<div class="form-group">
+							<label for="inputApellidoPaterno">Apellido Paterno</label>
+							<input type="text" class="form-control" name="apellidoPaterno" id="inputApellidoPaterno" placeholder="" maxlength="35">
+						</div>
+						<div class="form-group">
+							<label for="inputApellidoMaterno">Apellido Materno</label>
+							<input type="text" class="form-control" name="apellidoMaterno" id="inputApellidoMaterno" placeholder="" maxlength="35">
+						</div>
+						<div class="form-group">
+							<label for="inputDNI">DNI</label>
+							<input type="text" class="form-control" name="DNI" id="inputDNI" placeholder="Documento de identidad" maxlength="13">
+						</div>
+						<div class="form-group">
+							<label for="inputEmail">Email</label>
+							<input type="email" class="form-control" name="email" id="inputEmail" placeholder="Correo electrónico" maxlength="35">
+						</div>
+						<div class="form-group">
+							<label for="inputPassword1">Password</label>
+							<input type="password" class="form-control" name="password1" id="inputPassword1" placeholder="Password">
+						</div>
+						<div class="form-group">
+							<label for="inputPassword2">Confirmar password</label>
+							<input type="password" class="form-control" name="password2" id="inputPassword2" placeholder="Password confirmación">
+						</div>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+						<button type="submit" class="btn btn-primary">Guardar</button>
+					</form>
+				</div>
+				<div class="modal-footer">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	//- Modal para asignar Grado-Seccion
+	<div class="modal fade" id="asignarDocenteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Asignar Grado, Sección y Area a Docente</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					.row.mb-4
+						.col-3
+							<select id="gradoSelect" class="custom-select">
+								<option value="" selected>Grado</option>
+							</select>
+						.col-2
+							<select id="seccionSelect" class="custom-select">
+								<option value="" selected>Sección</option>
+							</select>
+						.col-4
+							<select id="areaSelect" class="custom-select">
+								<option value="" selected>Área</option>
+							</select>
+						.col-2
+							<button id="guardarAreaSeccionDocente" class="btn btn-primary">Asignar Salón</button>
+					.row.px-3
+						<h3 style="width:100%"class="text-center">Lista de salones - Periodo: #{periodo}</h3>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th scope="col">#</th>
+									<th scope="col">Grado</th>
+									<th scope="col">Sección</th>
+									<th scope="col">Área</th>
+								</tr>
+							</thead>
+							<tbody id="areaSeccionTable">
+							</tbody>
+						</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+block footerScripts
+	script.
+		$('#docentes').addClass('active');
+	script(src="/js/admin/docentes.js")

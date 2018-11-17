@@ -1,0 +1,71 @@
+extends layout
+block headerScripts
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="/js/liquidFillGauge.js"></script>
+block content
+	h1.text-center Datos generales
+	.row.my-4
+		.col-4
+			center
+				h4 Docentes
+				<svg id="resumenDocentes"  height="200" class="mx-auto" onclick="gauge5.update(NewValue());"></svg>
+		.col-4
+			center
+				h4 Estudiantes
+				<svg id="resumenEstudiantes"  height="200" class="mx-auto" onclick="gauge5.update(NewValue());"></svg>
+		.col-4
+			center
+				h4 Administradores
+				<svg id="resumenAdministradores"  height="200" class="mx-auto" onclick="gauge5.update(NewValue());"></svg>
+	.row
+		.col-4
+			center
+				h4 Grados
+				<svg id="resumenGrados"  height="200" class="mx-auto" onclick="gauge5.update(NewValue());"></svg>
+		.col-4
+			center
+				h4 Secciones
+				<svg id="resumenSecciones"  height="200" class="mx-auto" onclick="gauge5.update(NewValue());"></svg>
+		.col-4
+			center
+				h4 Áreas
+				<svg id="resumenAreas"  height="200" class="mx-auto" onclick="gauge5.update(NewValue());"></svg>
+	
+	script.
+		let config = createConfig();
+		let configGrados = createConfig("green", null, 6);
+		let configSecciones = createConfig("blue", null, 50);
+		let configAreas = createConfig("#ffc107", null, 20);
+		let configAdministradores = createConfig("#6f42c1", null, 20);
+		let configDocentes = createConfig("#6f42c1", null, 20);
+		var graficoDocentes = loadLiquidFillGauge("resumenDocentes", #{resumenDocentes}, configDocentes);
+		var graficoEstudiantes = loadLiquidFillGauge("resumenEstudiantes", #{resumenEstudiantes}, config);
+		var graficoAdministradores = loadLiquidFillGauge("resumenAdministradores", #{resumenAdministradores}, configAdministradores);
+		var graficoGrados = loadLiquidFillGauge("resumenGrados", #{resumenGrados}, configGrados);
+		var graficoSecciones = loadLiquidFillGauge("resumenSecciones", #{resumenSecciones}, configSecciones);
+		var graficoAreas = loadLiquidFillGauge("resumenAreas", #{resumenAreas}, configAreas);
+		
+
+		function createConfig(waveColor, circleColor, maxValue){
+			let config = liquidFillGaugeDefaultSettings();
+			config.circleThickness = 0.15;
+			config.circleColor = circleColor || "#238BCA";
+			config.textColor = "#FFFFF";
+			config.waveTextColor = "#FFFFFF";
+			config.waveColor = waveColor || "#238BFF";
+			config.textVertPosition = 0.8;
+			config.waveAnimateTime = 2000;
+			config.waveHeight = 0.025;
+			config.waveAnimate = true;
+			config.waveRise = false;
+			config.waveHeightScaling = false;
+			config.waveOffset = 0.25;
+			config.textSize = 0.75;
+			config.displayPercent = false;
+			config.waveCount = 3;
+			config.maxValue = maxValue || 250
+			return config;
+		}
+block footerScripts
+	script.
+		$('#resumen').addClass('active');

@@ -1,0 +1,26 @@
+extends layout
+block headerStyles
+	//-link(href="/css/admin/administradores.css", rel="stylesheet")
+block headerScripts
+block content
+	h1.text-center.mb-3 Administradores
+	.row
+		<table id="adminTable" class="table">
+			<thead class="thead-light">
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Apellidos</th>
+					<th scope="col">Nombres</th>
+					<th scope="col">DNI</th>
+					<th scope="col">email</th>
+					<th scope="col">Estado</th>
+				</tr>
+			</thead>
+			<tbody id="docentesTableBody">
+			</tbody>
+		</table>
+	
+block footerScripts
+	script.
+		$('#administradores').addClass('active');
+	script(src="/js/admin/administradores.js")

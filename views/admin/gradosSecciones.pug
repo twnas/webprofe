@@ -1,0 +1,79 @@
+extends layout
+block headerScripts
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="/js/liquidFillGauge.js"></script>
+block content
+  h1.text-center Grados  y Secciones
+  .container
+    .row.justify-content-between
+      p.py-2 #[h4 Año escolar:]&nbsp;#[h4.text-primary #{periodo}]
+      .col
+        button.btn.btn-success.float-right.px-2(data-toggle='modal', data-target='#nuevoGradoModal') Agregar grado
+    .row
+      .col-12
+        #accordionGradosSecciones.accordion
+          each grado in grados
+            .card(id=`card${grado.id}`)
+              .card-header(id='heading' + grado.id)
+                h5.mb-0
+                  button.btn.btn-link.collapsed(type='button', data-toggle='collapse', data-target='#collapse' + grado.id, aria-expanded='false', aria-controls='#collapse' + grado.id) #{grado.denominacion}
+                  button(onclick=`eliminarGrado(${grado.id})`).btn.btn-sm.btn-danger.float-right Eliminar
+              .collapse(id='collapse' + grado.id, aria-labelledby='heading' + grado.id, data-parent='#accordionGradosSecciones')
+                .card-body
+                  button.btn.btn-primary.float-right(onclick=`agregarSeccion(${grado.id})`) Agregar seccion
+                  .table.text-center
+                    table
+                      thead
+                        tr
+                          th Sección
+                          th Número de estudiantes
+                          th Acción
+                      tbody
+                        each seccion in grado.secciones
+                          if seccion.idSeccion
+                            tr(id=`row${seccion.idSeccion}`)
+                              td #{seccion.denominacion}
+                              td #{seccion.numAlumnos ? seccion.numAlumnos : 0}
+                              td
+                                a.btn.btn-secondary(href=`/admin/estudiantes/${seccion.idSeccion}`) Ver estudiantes
+                                button.btn.btn-danger(onclick=`eliminarSeccion(${grado.id}, ${seccion.idSeccion})`) Eliminar sección
+  #nuevaSeccionModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='nuevaSeccionModalLabel', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          h5#nuevaSeccionModalLabel.modal-title Agregar sección al
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body.p-4
+          p Ingrese la denominación de la nueva sección:
+          input#inputNuevaSeccion(type='text', placeholder='Ejemplo: D')
+        .modal-footer
+          button.btn.btn-secondary(type='button', data-dismiss='modal') Cancelar
+            button#confirmarNuevaSeccion.btn.btn-primary(type='button', data-dismiss='modal') Confirmar
+  #nuevoGradoModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='nuevaSeccionModalLabel', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          h5#nuevoGradoModalLabel.modal-title Agregar grado
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body.p-4
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text Denominación
+            input#inputDenominacionGrado.form-control(type='text', placeholder='Ej: Cuarto Grado', aria-label='Primer bimestre', aria-describedby='input1erBimestre')
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text Abreviación
+            input#inputAbreviacionGrado.form-control(type='text', placeholder='Ej: 4° grado', aria-label='Segundo bimestre', aria-describedby='input2doBimestre')
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text Correlativo
+            input#inputCorrelativoGrado.form-control(type='number', placeholder='Ej: 4', aria-label='Tercer bimestre', aria-describedby='input3erBimestre', min=grados.length+1)
+        .modal-footer
+          button.btn.btn-secondary(type='button', data-dismiss='modal') Cancelar
+            button#confirmarNuevoGrado.btn.btn-primary(type='button', data-dismiss='modal') Confirmar
+block footerScripts
+  script(type='text/javascript', src='/js/admin/gradosSecciones.js')
+  script.
+    $('#gradosSecciones').addClass('active');

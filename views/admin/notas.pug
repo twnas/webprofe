@@ -1,0 +1,80 @@
+extends layout
+block headerScripts
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="/js/liquidFillGauge.js"></script>
+block content
+  h1.text-center Notas
+  .container
+    .row
+      p.py-2 #[h4 Año escolar:]&nbsp;#[h4.text-primary #{periodo}]
+      .col
+        label.btn.btn-secondary.float-right(for="importarNotas") Importar notas
+          input#importarNotas(type='file', style='display: none;', size='60')
+    .row
+      .col
+        .form-row
+          .form-group.col-md-4
+            label(for='selectGrado') Grado
+            select#selectGrado.form-control
+              option(selected='') Seleccione...
+              each grado, ind in grados
+                option(value=grado.id, selected=(ind == 0)) #{grado.denominacion}
+          .form-group.col-md-4
+            label(for='selectSeccion') Seccion
+            select#selectSeccion.form-control
+              option(selected='') Seleccione...
+              each seccion, ind in grados[0].secciones
+                option(value=seccion.idSeccion, selected=(ind == 0)) #{seccion.denominacion}
+          .form-group.col-md-4
+            label(for='selectArea') Área
+            select#selectArea.form-control
+              option(selected='') Seleccione...
+              each area, ind in areas
+                option(value=area.idArea selected=(ind == 0)) #{area.nombre}
+    .row
+      .col
+        .table.table-bordered(align='center')
+          table
+            thead
+              tr
+                th #
+                th Apellidos
+                th Nombres
+                th IB
+                th IIB
+                th IIIB
+                th IVB
+                th Acción
+            tbody
+              
+  #editarNotasModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='editarNotasModalLabel', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          h5#editarNotasModalLabel.modal-title Modificar notas
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body.p-4
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text 1° Bimestre
+            input#input1erBimestre.form-control(type='text', aria-label='Primer bimestre', aria-describedby='input1erBimestre')
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text 2° Bimestre
+            input#input2doBimestre.form-control(type='text', aria-label='Segundo bimestre', aria-describedby='input2doBimestre')
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text 3° Bimestre
+            input#input3erBimestre.form-control(type='text', aria-label='Tercer bimestre', aria-describedby='input3erBimestre')
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text 4° Bimestre
+            input#input4toBimestre.form-control(type='text', aria-label='Cuarto bimestre', aria-describedby='input4toBimestre')
+        .modal-footer
+          button.btn.btn-secondary(type='button', data-dismiss='modal') Cancelar
+            button#confirmarEditarNota.btn.btn-primary(type='button', data-dismiss='modal') Guardar cambios         
+block footerScripts
+  script(type='text/javascript', src='/js/admin/notas.js')
+  script.
+    $('#notas').addClass('active');

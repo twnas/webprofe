@@ -1,0 +1,53 @@
+extends layout
+block headerScripts
+  <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+  <script type="text/javascript" src="/js/liquidFillGauge.js"></script>
+block content
+  h1.text-center Areas
+  .container
+    .row
+      p
+        span
+          h4 Año escolar:&nbsp;
+          h4.text-primary #{periodo}
+    .row
+      .col-8
+        #listAreas.list-group
+          each area in areas
+            span.list-group-item.list-group-item-action(id='item'+area.idArea, onclick=`setAreaSeleccionada(${area.idArea})`) #{area.nombre}
+
+      .col-4
+        .btn-group-vertical(role='group', aria-label='Menú de opciones para las areas')
+          button#agregarArea.btn.btn-primary(data-toggle='modal', data-target='#nuevaAreaModal') Agregar área
+          button#modificarArea.btn.btn-warning(data-toggle='modal', data-target='#modificarAreaModal', disabled) Modificar área
+          button#eliminarArea.btn.btn-danger Eliminar área
+  #nuevaAreaModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='nuevaAreaModalLabel', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          h5#nuevaAreaModalLabel.modal-title Agregar área al año escolar
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body.p-4
+          p Ingrese el nombre del área a agregar
+          input#inputNombreArea(type='text', placeholder='Ej: Educación cívica')
+        .modal-footer
+          button.btn.btn-secondary(type='button', data-dismiss='modal') Cancelar
+            button#confirmarNuevaArea.btn.btn-primary(type='button', data-dismiss='modal') Confirmar
+  #modificarAreaModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='modificarAreaModalLabel', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          h5#modificarAreaModalLabel.modal-title Modificar nombre del área
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body.p-4
+          p Ingrese el nombre del área a editar
+          input#inputNuevoNombreArea(type='text', placeholder='Ej: Educación cívica')
+        .modal-footer
+          button.btn.btn-secondary(type='button', data-dismiss='modal') Cancelar
+            button#confirmarModificarArea.btn.btn-primary(type='button', data-dismiss='modal') Modificar
+block footerScripts
+  script(src='/js/admin/areas.js')
+  script.
+    $('#areas').addClass('active');
