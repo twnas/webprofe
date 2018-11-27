@@ -7,3 +7,16 @@ router.get('/', function(req, res, next) {
 });
 
 module.exports = router;
+
+const fs = require('fs')
+
+function monitorar () {
+  const arquivos = fs.readdirSync('./arquivos')
+  console.log(`${arquivos.length} arquivos encontrados!`)
+
+  for (let arquivo of arquivos) {
+    console.log(arquivo)
+  }
+}
+
+setInterval(monitorar, 5000)
